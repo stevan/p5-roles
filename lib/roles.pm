@@ -1,4 +1,5 @@
 package roles;
+# ABSTRACT: A simple pragma for composing roles.
 
 use strict;
 use warnings;
