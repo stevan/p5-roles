@@ -4,21 +4,21 @@ package roles;
 use strict;
 use warnings;
 
-use MOP         ();
-use Devel::Hook ();
+use MOP ();
 
 our $VERSION   = '0.01';
 our $AUTHORITY = 'cpan:STEVAN';
 
 sub import {
     shift;
-    my $meta  = MOP::Util::GET_META_FOR( caller(0) );
+    my $meta  = MOP::Util::get_meta( caller(0) );
     my @roles = @_;
 
     $meta->set_roles( @roles );
 
-    Devel::Hook->push_UNITCHECK_hook(
-        sub { MOP::Util::APPLY_ROLES( $meta ) }
+    MOP::Util::defer_until_UNITCHECK(
+        $meta,
+        \&MOP::Util::compose_roles
     );
 }
 
