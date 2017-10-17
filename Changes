@@ -1,4 +1,9 @@
 Revision history for Perl extension roles
 
+0.02
+    - use the new MOP::Util::APPLY_ROLES API
+      from the MOP v0.12
+        - bumped the dependency for MOP
+
 0.01 2017-10-16
     - initial release
