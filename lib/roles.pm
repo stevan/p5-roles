@@ -12,30 +12,14 @@ our $AUTHORITY = 'cpan:STEVAN';
 
 sub import {
     shift;
-    my $role = caller;
+    my $meta  = MOP::Util::GET_META_FOR( caller(0) );
     my @roles = @_;
 
-    {
-        no strict   'refs';
-        no warnings 'once';
-        push @{ $role.'::DOES' } => @roles;
-    }
+    $meta->set_roles( @roles );
 
-    Devel::Hook->push_UNITCHECK_hook(sub {
-        my $meta;
-        {
-            no strict   'refs';
-            no warnings 'once';
-            if ( @{ $role.'::ISA' } ) {
-                $meta = MOP::Class->new( $role )
-            }
-            else {
-                $meta = MOP::Role->new( $role )
-            }
-        }
-
-        MOP::Util::APPLY_ROLES( $meta );
-    });
+    Devel::Hook->push_UNITCHECK_hook(
+        sub { MOP::Util::APPLY_ROLES( $meta ) }
+    );
 }
 
 1;
@@ -125,6 +109,7 @@ __END__
 
 This is a very simple pragma which takes a list of roles as
 package names, adds them to the C<@DOES> package variable
-and then schedule for composition to occur during UNITCHECK.
+and then schedule for role composition to occur during the
+next available UNITCHECK phase.
 
 =cut
