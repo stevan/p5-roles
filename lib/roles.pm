@@ -34,11 +34,7 @@ sub import {
             }
         }
 
-        MOP::Util::APPLY_ROLES(
-            $meta,
-            [ $meta->roles ],
-            to => ($meta->isa('MOP::Class') ? 'class' : 'role')
-        );
+        MOP::Util::APPLY_ROLES( $meta );
     });
 }
 
