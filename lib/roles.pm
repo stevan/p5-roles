@@ -11,15 +11,15 @@ our $AUTHORITY = 'cpan:STEVAN';
 
 sub import {
     shift;
-    my $meta  = MOP::Util::get_meta( caller(0) );
+    my $pkg   = caller(0);
+    my $meta  = MOP::Util::get_meta( $pkg );
     my @roles = @_;
 
     $meta->set_roles( @roles );
 
-    MOP::Util::defer_until_UNITCHECK(
-        $meta,
-        \&MOP::Util::compose_roles
-    );
+    MOP::Util::defer_until_UNITCHECK(sub {
+        MOP::Util::compose_roles( MOP::Util::get_meta( $pkg ) )
+    });
 }
 
 1;
