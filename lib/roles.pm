@@ -23,6 +23,21 @@ sub import {
     });
 }
 
+sub DOES {
+    my ($self, $role) = @_;
+    # get the class ...
+    my $class = ref $self || $self;
+    # if we inherit from this, we are good ...
+    return 1 if $class->isa( $role );
+    # next check the roles ...
+    my $meta = MOP::Util::get_meta( $class );
+    # test just the local (and composed) roles first ...
+    return 1 if $meta->does_role( $role );
+    # then check the inheritance hierarchy next ...
+    return 1 if scalar grep { MOP::Util::get_meta( $_ )->does_role( $role ) } @{ $meta->mro };
+    return 0;
+}
+
 1;
 
 __END__
