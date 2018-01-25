@@ -7,7 +7,7 @@ use warnings;
 use MOP             ();
 use Module::Runtime ();
 
-our $VERSION   = '0.02';
+our $VERSION   = '0.03';
 our $AUTHORITY = 'cpan:STEVAN';
 
 sub import {
@@ -121,11 +121,26 @@ __END__
         }
     }
 
+    # ...
+
+    US::Currency->roles::DOES('Eq');         # true
+    US::Currency->roles::DOES('Printable');  # true
+    US::Currency->roles::DOES('Comparable'); # true
+
 =head1 DESCRIPTION
 
 This is a very simple pragma which takes a list of roles as
 package names, adds them to the C<@DOES> package variable
 and then schedule for role composition to occur during the
 next available UNITCHECK phase.
+
+=head2 C<roles::DOES>
+
+Since Perl v5.10 there has been a C<UNIVERSAL::DOES> method
+available, however it is unaware of this module so is not
+very useful to us. Instead we supply a replacement in the
+form of C<roles::DOES> method that can be used like this:
+
+  $instance->roles::DOES('SomeRole');
 
 =cut
