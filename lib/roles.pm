@@ -4,7 +4,8 @@ package roles;
 use strict;
 use warnings;
 
-use MOP ();
+use MOP             ();
+use Module::Runtime ();
 
 our $VERSION   = '0.02';
 our $AUTHORITY = 'cpan:STEVAN';
@@ -13,7 +14,7 @@ sub import {
     shift;
     my $pkg   = caller(0);
     my $meta  = MOP::Util::get_meta( $pkg );
-    my @roles = @_;
+    my @roles = map Module::Runtime::use_package_optimistically( $_ ), @_;
 
     $meta->set_roles( @roles );
 
