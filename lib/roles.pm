@@ -131,7 +131,7 @@ __END__
 
 This is a very simple pragma which takes a list of roles as
 package names, adds them to the C<@DOES> package variable
-and then schedule for role composition to occur during the
+and then schedules for role composition to occur during the
 next available UNITCHECK phase.
 
 =head2 C<roles::DOES>
