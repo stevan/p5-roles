@@ -1,6 +1,6 @@
 Revision history for Perl extension roles
 
-0.03
+0.03 2018-01-31
     - when composing roles, we will attempt
       to load them in an optimistic manner
     - inspecting roles can now be done with
